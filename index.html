@@ -738,6 +738,7 @@ const P = [
   {id:"canaleta-v-14x19x34", cat:"canaletas", tipo:"Canaleta V", d:[14,19,34], img:"2025/11/27.png", uso:"Cintas na família 14, em trechos de modulação de 34 cm.", pend:"No site atual aparece como “Canaleta V” e as outras como “Canaleta de Concreto V”. Confirmar se é o mesmo tipo."},
   {id:"canaleta-14x19x19", cat:"canaletas", tipo:"Canaleta", d:[14,19,19], img:"2025/11/3.png", uso:"Meia canaleta da família 14."},
   {id:"canaleta-v-19x19x39", cat:"canaletas", tipo:"Canaleta V", d:[19,19,39], img:"2025/11/10.png", uso:"Cintas e vergas na família 19."},
+  {id:"canaleta-9x19x39", cat:"canaletas", tipo:"Canaleta", d:[9,19,39], img:"2025/11/7.png", uso:"Cintas, vergas e contravergas na família 9.", pend:"Confirmar se é canaleta U ou V e enviar a foto própria desta peça (usada a imagem da canaleta U 14×19×39)."},
   {id:"canaleta-19x19x19", cat:"canaletas", tipo:"Canaleta", d:[19,19,19], img:"2025/11/11.png", uso:"Meia canaleta da família 19."},
   {id:"piso-intertravado-retangular", cat:"pisos", tipo:"Piso intertravado retangular", curto:"10 × 20", curtoCm:true, esp:[4,6,8], img:"2025/11/31.png", uso:"Calçadas, condomínios, pátios e estacionamentos.", mpa:"35 e 50 MPa", norma:"NBR 9781", rend:50},
   {id:"piso-intertravado-16-faces", cat:"pisos", tipo:"Piso intertravado 16 faces", curto:"16 faces", esp:[6,8], img:"", ilustr:true, uso:"Calçadas, ruas, pátios e estacionamentos, com encaixe que trava as peças entre si.", mpa:"35 e 50 MPa", norma:"NBR 9781", fmtPend:"Informar comprimento e largura da peça 16 faces e o rendimento (peças por m²)."},
@@ -1469,7 +1470,7 @@ function iniciarCalculadora(){
   const FAM = {
     "14": {inteiro:"bloco-estrutural-14x19x39", meio:"bloco-concreto-14x19x19", canaleta:"canaleta-u-14x19x39"},
     "19": {inteiro:"bloco-vedacao-19x19x39", meio:"bloco-concreto-19x19x19", canaleta:"canaleta-v-19x19x39"},
-    "9":  {inteiro:"bloco-concreto-9x19x39", meio:"bloco-concreto-9x19x19", canaleta:null}
+    "9":  {inteiro:"bloco-concreto-9x19x39", meio:"bloco-concreto-9x19x19", canaleta:"canaleta-9x19x39"}
   };
   let paredes = [{c:6, a:2.8}, {c:4, a:2.8}, {c:6, a:2.8}, {c:4, a:2.8}];
   const lista = $("#paredes"), num = id => Math.max(parseFloat(String($("#" + id).value).replace(",", ".")) || 0, 0);
