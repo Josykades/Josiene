@@ -738,7 +738,7 @@ const P = [
   {id:"canaleta-v-14x19x34", cat:"canaletas", tipo:"Canaleta V", d:[14,19,34], img:"2025/11/27.png", uso:"Cintas na família 14, em trechos de modulação de 34 cm.", pend:"No site atual aparece como “Canaleta V” e as outras como “Canaleta de Concreto V”. Confirmar se é o mesmo tipo."},
   {id:"canaleta-14x19x19", cat:"canaletas", tipo:"Canaleta", d:[14,19,19], img:"2025/11/3.png", uso:"Meia canaleta da família 14."},
   {id:"canaleta-v-19x19x39", cat:"canaletas", tipo:"Canaleta V", d:[19,19,39], img:"2025/11/10.png", uso:"Cintas e vergas na família 19."},
-  {id:"canaleta-9x19x39", cat:"canaletas", tipo:"Canaleta", d:[9,19,39], img:"2025/11/7.png", uso:"Cintas, vergas e contravergas na família 9.", pend:"Confirmar se é canaleta U ou V e enviar a foto própria desta peça (usada a imagem da canaleta U 14×19×39)."},
+  {id:"canaleta-u-9x19x39", cat:"canaletas", tipo:"Canaleta U", d:[9,19,39], img:"2025/11/7.png", uso:"Vergas, contravergas e cintas de amarração na família 9.", pend:"Enviar a foto própria desta peça (usada a imagem da canaleta U 14×19×39)."},
   {id:"canaleta-19x19x19", cat:"canaletas", tipo:"Canaleta", d:[19,19,19], img:"2025/11/11.png", uso:"Meia canaleta da família 19."},
   {id:"piso-intertravado-retangular", cat:"pisos", tipo:"Piso intertravado retangular", curto:"10 × 20", curtoCm:true, esp:[4,6,8], img:"2025/11/31.png", uso:"Calçadas, condomínios, pátios e estacionamentos.", mpa:"35 e 50 MPa", norma:"NBR 9781", rend:50},
   {id:"piso-intertravado-16-faces", cat:"pisos", tipo:"Piso intertravado 16 faces", curto:"16 faces", esp:[6,8], img:"", ilustr:true, uso:"Calçadas, ruas, pátios e estacionamentos, com encaixe que trava as peças entre si.", mpa:"35 e 50 MPa", norma:"NBR 9781", fmtPend:"Informar comprimento e largura da peça 16 faces e o rendimento (peças por m²)."},
@@ -1073,7 +1073,9 @@ ${cabPagina("Calculadora de materiais", "Informe as paredes, as portas e janelas
         <button class="add-parede" type="button" id="add-parede">+ Adicionar parede</button>
         <div class="campos mt-s">
           <div class="campo"><label for="c-perda">Margem de perda</label><select id="c-perda"><option value="0">Sem margem</option><option value="5" selected>5%</option><option value="10">10%</option></select></div>
-          <div class="campo"><label class="chk"><input type="checkbox" id="c-cinta" checked><span>Cinta de amarração no topo das paredes (canaletas)</span></label></div>
+          <div class="campo"><label class="chk"><input type="checkbox" id="c-cinta" checked><span>Cinta de amarração no topo das paredes</span></label></div>
+          <div class="campo"><label class="chk"><input type="checkbox" id="c-meio" checked><span>Cinta intermediária em paredes altas</span></label></div>
+          <div class="campo" id="campo-limite"><label for="c-limite">Parede alta: acima de (m)</label><input id="c-limite" type="number" inputmode="decimal" min="1" step="0.1" value="3"><span class="dica">Acima dessa altura entra uma fiada de canaletas no meio. Se a parede tiver mais que o dobro, entram duas, e assim por diante.</span></div>
         </div>
       </div>
     </div>
@@ -1470,7 +1472,7 @@ function iniciarCalculadora(){
   const FAM = {
     "14": {inteiro:"bloco-estrutural-14x19x39", meio:"bloco-concreto-14x19x19", canaleta:"canaleta-u-14x19x39"},
     "19": {inteiro:"bloco-vedacao-19x19x39", meio:"bloco-concreto-19x19x19", canaleta:"canaleta-v-19x19x39"},
-    "9":  {inteiro:"bloco-concreto-9x19x39", meio:"bloco-concreto-9x19x19", canaleta:"canaleta-9x19x39"}
+    "9":  {inteiro:"bloco-concreto-9x19x39", meio:"bloco-concreto-9x19x19", canaleta:"canaleta-u-9x19x39"}
   };
   let paredes = [{c:6, a:2.8}, {c:4, a:2.8}, {c:6, a:2.8}, {c:4, a:2.8}];
   const lista = $("#paredes"), num = id => Math.max(parseFloat(String($("#" + id).value).replace(",", ".")) || 0, 0);
@@ -1501,9 +1503,10 @@ function iniciarCalculadora(){
     $("#p-dica").textContent = p.rend ? "Peça de 10 × 20 cm: 50 peças por m²." : "Calculado em m². A quantidade de peças é confirmada no orçamento.";
   }
   $("#p-tipo").addEventListener("input", () => { opcoesPiso(); calcular(); });
+  $("#c-meio").addEventListener("change", () => { $("#campo-limite").hidden = !$("#c-meio").checked; });
   $("#usa-parede").addEventListener("change", () => { $("#sec-parede").hidden = !$("#usa-parede").checked; $("#painel-vaos").hidden = !$("#usa-parede").checked; calcular(); });
   $("#usa-piso").addEventListener("change", () => { $("#sec-piso").hidden = !$("#usa-piso").checked; calcular(); });
-  ["c-fam","c-perda","c-cinta","vp-q","vp-l","vp-a","vj-q","vj-l","vj-a","p-comp","p-larg","p-esp","p-mpa","p-perda"].forEach(id => $("#" + id).addEventListener("input", calcular));
+  ["c-fam","c-perda","c-cinta","c-meio","c-limite","vp-q","vp-l","vp-a","vj-q","vj-l","vj-a","p-comp","p-larg","p-esp","p-mpa","p-perda"].forEach(id => $("#" + id).addEventListener("input", calcular));
 
   function calcular(){
     itensCalc = [];
@@ -1519,7 +1522,12 @@ function iniciarCalculadora(){
       const vaos = Math.min(np * lp * ap + nj * lj * aj, bruta);
       const liquida = Math.max(bruta - vaos, 0);
       // canaletas: cinta no topo de cada parede + vergas (portas e janelas) + contravergas (janelas)
-      const canCinta = cinta ? paredes.reduce((s, p) => s + (p.c > 0 && p.a > 0 ? Math.ceil(p.c / 0.4) : 0), 0) : 0;
+      const usaMeio = $("#c-meio").checked, limite = Math.max(num("c-limite"), 1);
+      const intermed = p => usaMeio && p.a > limite ? Math.ceil(p.a / limite) - 1 : 0;   // fiadas de cinta no meio da parede
+      const fiadaCan = p => (p.c > 0 && p.a > 0 ? Math.ceil(p.c / 0.4) : 0);
+      const canTopo = cinta ? paredes.reduce((s, p) => s + fiadaCan(p), 0) : 0;
+      const canMeio = paredes.reduce((s, p) => s + fiadaCan(p) * intermed(p), 0);
+      const canCinta = canTopo + canMeio;
       const porVerga = l => l > 0 ? Math.ceil((l + 0.6) / 0.4) : 0;
       const canVerga = np * porVerga(lp) + nj * porVerga(lj);
       const canContra = nj * porVerga(lj);
@@ -1527,19 +1535,19 @@ function iniciarCalculadora(){
       // área ocupada pelas canaletas sai da área de blocos (cada peça ocupa 0,40 × 0,20 m)
       const areaBlocos = Math.max(liquida - canTotal * 0.08, 0);
       // meio-blocos: um a cada duas fiadas em cada ponta de parede (amarração em meia junta)
-      const meio = paredes.reduce((s, p) => s + (p.c > 0 ? Math.round(p.a / 0.2) : 0), 0);
+      const meio = paredes.reduce((s, p) => s + (p.c > 0 ? Math.max(Math.round(p.a / 0.2) - (cinta ? 1 : 0) - intermed(p), 0) : 0), 0);
       const inteiros = Math.max(areaBlocos * 12.5 - meio * 0.5, 0);
       const qInt = Math.ceil(inteiros * perda), qMeio = Math.ceil(meio * perda), qCan = Math.ceil(canTotal * perda);
       if (qInt) itensCalc.push({key: fam.inteiro, qtd: qInt, un: "peças", detalhe: "paredes"});
       if (qMeio) itensCalc.push({key: fam.meio, qtd: qMeio, un: "peças", detalhe: "meio-bloco, nas pontas das paredes"});
       if (qCan) fam.canaleta
-        ? itensCalc.push({key: fam.canaleta, qtd: qCan, un: "peças", detalhe: [canCinta && "cinta", canVerga && "vergas", canContra && "contravergas"].filter(Boolean).join(", ")})
-        : itensCalc.push({key: null, nome: "Canaleta para família 9 (consultar modelo)", qtd: qCan, un: "peças", detalhe: "cinta e vergas"});
+        ? itensCalc.push({key: fam.canaleta, qtd: qCan, un: "peças", detalhe: [canTopo && "cinta no topo", canMeio && "cinta intermediária", canVerga && "vergas", canContra && "contravergas"].filter(Boolean).join(", ")})
+        : itensCalc.push({key: null, nome: "Canaleta para família 9 (consultar modelo)", qtd: qCan, un: "peças", detalhe: "cintas e vergas"});
       resumo.push(["Paredes", `${paredes.length} · ${fmt(bruta, 2)} m²`], ["Vãos descontados", `${fmt(vaos, 2)} m²`], ["Área de alvenaria", `${fmt(liquida, 2)} m²`]);
-      msgParede = `\nParedes: ${paredes.map(x => `${fmt(x.c,2)} × ${fmt(x.a,2)} m`).join("; ")} (${fmt(liquida,2)} m² líquidos)\nVãos: ${np} porta(s) ${fmt(lp,2)} × ${fmt(ap,2)} m e ${nj} janela(s) ${fmt(lj,2)} × ${fmt(aj,2)} m${cinta ? "\nCom cinta de amarração no topo" : ""}`;
+      msgParede = `\nParedes: ${paredes.map(x => `${fmt(x.c,2)} × ${fmt(x.a,2)} m`).join("; ")} (${fmt(liquida,2)} m² líquidos)\nVãos: ${np} porta(s) ${fmt(lp,2)} × ${fmt(ap,2)} m e ${nj} janela(s) ${fmt(lj,2)} × ${fmt(aj,2)} m${cinta ? "\nCom cinta de amarração no topo" : ""}${canMeio ? `\nCom cinta intermediária nas paredes acima de ${fmt(limite,2)} m` : ""}`;
       const maior = paredes.reduce((m, x) => x.c * x.a > m.c * m.a ? x : m, paredes[0]);
-      const chave = `${maior.c}x${maior.a}x${cinta}`;
-      if (chave !== ultimo){ desenharParede(maior.c, maior.a, cinta); ultimo = chave; }
+      const chave = `${maior.c}x${maior.a}x${cinta}x${intermed(maior)}`;
+      if (chave !== ultimo){ desenharParede(maior.c, maior.a, cinta, intermed(maior)); ultimo = chave; }
     }
 
     if (usaPiso){
@@ -1576,12 +1584,13 @@ function iniciarCalculadora(){
     toast(`${validos.length} ${validos.length === 1 ? "material adicionado" : "materiais adicionados"} ao orçamento`);
   });
 
-  function desenharParede(comp, alt, cinta){
+  function desenharParede(comp, alt, cinta, nMeio = 0){
     const C = Math.min(Math.max(comp, .4), 24), A = Math.min(Math.max(alt, .2), 6);
     const bw = 40, bh = 20, fi = Math.max(1, Math.round(A / .2)), larg = Math.round(C / .4 * bw);
     let r = "", s = 11; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
     for (let f = 0; f < fi; f++){
-      const y = (fi - 1 - f) * bh, topo = cinta && f === fi - 1; let x = f % 2 && !topo ? -bw / 2 : 0;
+      const meioCinta = new Set(Array.from({length: nMeio}, (_, k) => Math.round(fi * (k + 1) / (nMeio + 1)) - 1));
+      const y = (fi - 1 - f) * bh, topo = (cinta && f === fi - 1) || meioCinta.has(f); let x = f % 2 && !topo ? -bw / 2 : 0;
       while (x < larg){
         const x0 = Math.max(x, 0), x1 = Math.min(x + bw, larg), t = 168 + Math.floor(rnd() * 26);
         const meio = x1 - x0 < bw - 1;
@@ -1591,7 +1600,7 @@ function iniciarCalculadora(){
       }
     }
     $("#viz").innerHTML = `<svg viewBox="0 0 ${larg} ${fi*bh}" width="${larg}" height="${fi*bh}" role="img" aria-label="Desenho da maior parede: blocos inteiros, meio-blocos nas pontas e canaletas no topo">${r}</svg>
-      <div class="legenda-viz"><span><i style="background:#B4B8BC"></i>Blocos</span><span><i style="background:rgb(120,170,210)"></i>Meio-blocos</span>${cinta ? `<span><i style="background:#0A94EC"></i>Canaletas</span>` : ""}</div>`;
+      <div class="legenda-viz"><span><i style="background:#B4B8BC"></i>Blocos</span><span><i style="background:rgb(120,170,210)"></i>Meio-blocos</span>${cinta || nMeio ? `<span><i style="background:#0A94EC"></i>Canaletas${nMeio ? " (topo e meio)" : ""}</span>` : ""}</div>`;
   }
   function desenharPiso(){
     let r = ""; let s = 5; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
