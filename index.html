@@ -39,7 +39,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:var(--texto);font-size:17px;line-height:1.6;color:var(--tinta);background:var(--branco);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{-webkit-tap-highlight-color:transparent;font-family:var(--texto);font-size:17px;line-height:1.6;color:var(--tinta);background:var(--branco);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body.travado{overflow:hidden}
 img,video{max-width:100%;display:block}
 a{color:inherit}
@@ -53,7 +53,7 @@ button{font:inherit;color:inherit}
 
 /* tipografia */
 h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1;letter-spacing:-.005em;color:var(--marinho)}
-.t-hero{font-size:clamp(46px,7.4vw,108px);font-weight:900;line-height:.92;letter-spacing:-.01em}
+.t-hero{font-size:clamp(42px,7.4vw,108px);font-weight:900;line-height:.92;letter-spacing:-.01em}
 .t-1{font-size:clamp(40px,5.6vw,76px);font-weight:900;line-height:.95}
 .t-2{font-size:clamp(34px,4.2vw,56px);line-height:.98}
 .t-3{font-size:clamp(24px,2.4vw,30px);font-weight:700;line-height:1.1}
@@ -105,6 +105,7 @@ body.limpo .conf-off{display:inline}
 .nav a{display:block;padding:8px 12px;border-radius:var(--r-s);text-decoration:none;color:rgba(255,255,255,.82);font-weight:600;font-size:15px;transition:color .2s,background-color .2s}
 .nav a:hover{color:#fff;background:rgba(255,255,255,.07)}
 .nav a.ativo{color:#fff;box-shadow:inset 0 -2px 0 var(--azul);border-radius:var(--r-s) var(--r-s) 0 0}
+.nav .nav-extra{display:none}
 .acoes-topo{display:flex;align-items:center;gap:10px}
 .btn-orc{position:relative}
 .contador{position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#fff;color:var(--marinho);font-size:12px;font-weight:800;display:none;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--azul)}
@@ -124,13 +125,18 @@ body.limpo .conf-off{display:inline}
   .nav a{font-family:var(--display);font-size:34px;font-weight:800;padding:12px 4px;border-bottom:1px solid rgba(255,255,255,.08);border-radius:0;color:#fff}
   .nav a.ativo{box-shadow:none;color:var(--azul)}
   .hamb{display:block}
+  .nav .nav-extra{display:grid;gap:12px;margin-top:28px;border:0}
+  .nav .nav-extra a{font-family:var(--texto);font-size:17px;font-weight:700;border:0;border-radius:var(--r-m);padding:0 22px;justify-content:center}
+  .nav .nav-extra a.btn-wpp{color:#06311A;display:flex;align-items:center;gap:10px}
+  .nav .nav-extra a.tel{display:block;text-align:center;font-weight:600;color:rgba(255,255,255,.75);min-height:auto;padding:6px}
   .acoes-topo{margin-left:auto}
 }
 @media (max-width:640px){.topo .btn-orc .txt{display:none}.topo .btn-orc{padding:0 14px}.marca img{height:38px}}
 
 /* ============ estrutura de página ============ */
 main{min-height:100vh}
-.pagina{animation:entra .45s ease both}
+.pagina{animation:aparece .3s ease both}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
 @keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .secao{padding:clamp(72px,9vw,128px) 0}
 .secao-c{padding:clamp(56px,6vw,88px) 0}
@@ -206,7 +212,7 @@ main{min-height:100vh}
 .cat:nth-child(5){grid-column:span 12;min-height:210px}
 .cat:nth-child(5) img{width:30%;bottom:-30%;right:4%}
 @media (max-width:960px){.cat,.cat:nth-child(2){grid-column:span 6}.cat:nth-child(5){grid-column:span 6;min-height:340px}.cat:nth-child(5) img{width:68%;bottom:-6%;right:-6%}.cat:nth-child(1){grid-column:span 12;grid-row:auto;min-height:420px}}
-@media (max-width:560px){.cat,.cat:nth-child(2),.cat:nth-child(5){grid-column:span 12;min-height:250px}.cat img,.cat:nth-child(5) img{width:50%;bottom:-6%;right:-4%}}
+@media (max-width:560px){.cats{gap:10px}.cat,.cat:nth-child(2),.cat:nth-child(5){grid-column:span 6;min-height:200px;padding:18px}.cat:nth-child(1){grid-column:span 12;min-height:290px}.cat h3,.cat:nth-child(5) h3{font-size:23px}.cat:nth-child(1) h3{font-size:34px}.cat .qtd{font-size:13.5px}.cat img,.cat:nth-child(5) img{width:72%;right:-12%;bottom:-8%}.cat:nth-child(1) img{width:62%}.cat .ir{width:38px;height:38px}}
 
 /* Durablock */
 .durablock{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(40px,6vw,96px);align-items:center}
@@ -233,6 +239,7 @@ main{min-height:100vh}
 .raio svg{width:100%;height:100%;overflow:visible}
 .raio .onda{transform-origin:260px 260px;animation:onda 4.5s ease-out infinite;opacity:0}
 .raio .onda.o2{animation-delay:1.5s}.raio .onda.o3{animation-delay:3s}
+@media (max-width:760px){.raio .onda{display:none}}
 @keyframes onda{0%{transform:scale(.15);opacity:.55}100%{transform:scale(1);opacity:0}}
 .capac-lista.q4{grid-template-columns:repeat(4,1fr)}
 .capac-lista.q4 div{padding-left:24px;border-left:1px solid rgba(255,255,255,.12)}
@@ -278,6 +285,7 @@ main{min-height:100vh}
 .faixas-mpa .lista-mpa{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .faixas-mpa .lista-mpa span{font-size:13px;font-weight:600;padding:2px 8px;border-radius:4px;background:#fff;border:1px solid var(--linha)}
 @media (max-width:860px){.faixas-mpa{grid-template-columns:1fr}.busca{flex-basis:100%;margin-left:0}}
+@media (max-width:560px){.grade{grid-template-columns:1fr 1fr;gap:10px}.prod{border-radius:10px}.prod .corpo{padding:12px 12px 14px}.prod .tipo{font-size:12.5px;line-height:1.3}.prod .med{font-size:clamp(18px,5.6vw,23px);white-space:nowrap}.prod .med small{font-size:12px;margin-left:2px}.prod .eixos{display:none}.prod .rodape-card{flex-direction:column;align-items:stretch;gap:8px;margin-top:12px;padding-top:12px}.prod .ver{font-size:13.5px;text-align:center}.add{justify-content:center;height:36px}.filtros{flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:2px 20px 6px;scrollbar-width:none}.filtros::-webkit-scrollbar{display:none}.chip{flex:none}}
 
 /* ficha */
 .ficha{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(36px,5vw,80px);align-items:start;padding-top:calc(var(--topo) + 40px)}
@@ -482,6 +490,10 @@ a.canal:hover .ic{background:var(--azul);color:#fff}
 .wpp-fixo{position:fixed;right:22px;bottom:22px;z-index:70;width:60px;height:60px;border-radius:50%;background:var(--wpp);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);transition:transform .25s}
 .wpp-fixo:hover{transform:scale(1.07)}
 .wpp-fixo svg{width:32px;height:32px}
+.modo-link{background:none;border:0;padding:0;color:rgba(255,255,255,.62);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:14px}
+.modo-link:hover{color:#fff}
+.so-conf{}
+body.limpo .so-conf{display:none}
 .modo{position:fixed;left:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 10px;border-radius:24px;background:rgba(7,14,24,.9);color:#fff;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.12);cursor:pointer;backdrop-filter:blur(6px)}
 .modo .sw{width:34px;height:20px;border-radius:10px;background:var(--aviso);position:relative;transition:background-color .25s}
 .modo .sw::after{content:"";position:absolute;top:3px;left:17px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .25s}
@@ -523,6 +535,12 @@ body.limpo .modo .sw::after{left:3px}
 @media (max-width:640px){.toast{left:16px;right:16px;transform:translateY(30px)}.toast.mostra{transform:none}}
 .toast button{border:0;background:rgba(255,255,255,.12);color:#fff;font-weight:700;padding:8px 12px;border-radius:var(--r-s);cursor:pointer;white-space:nowrap}
 
+@media (hover:none){
+  .cat:hover img,.prod:hover .img img,.galeria button:hover img,.vitrine a:hover img,.wpp-fixo:hover,.link:hover svg{transform:none}
+  .prod:hover{transform:none;box-shadow:none;border-color:var(--linha)}
+  .cat:hover{background:var(--nevoa)}.cat:nth-child(1):hover{background:var(--linha)}
+  .logos img,.parceiros img{filter:none;opacity:1}
+}
 /* utilitários */
 .mt-s{margin-top:16px}.mt-m{margin-top:28px}.mt-l{margin-top:48px}
 .centro{text-align:center}
@@ -532,7 +550,7 @@ body.limpo .modo .sw::after{left:3px}
 .pular:focus{top:12px}
 </style>
 </head>
-<body>
+<body class="limpo">
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
 <!-- ícones -->
@@ -565,6 +583,7 @@ body.limpo .modo .sw::after{left:3px}
         <li><a href="#/obras" data-rota="obras">Obras</a></li>
         <li><a href="#/revenda" data-rota="revenda">Revenda</a></li>
         <li><a href="#/contato" data-rota="contato">Contato</a></li>
+        <li class="nav-extra"><a class="btn btn-wpp" data-wpp="Olá! Gostaria de um orçamento." href="#"><svg><use href="#i-wpp"/></svg>WhatsApp de vendas</a><a class="tel" href="tel:+551639000811">ou ligue (16) 3900-0811</a></li>
       </ul>
     </nav>
     <div class="acoes-topo">
@@ -587,7 +606,7 @@ body.limpo .modo .sw::after{left:3px}
       <h4>Produtos</h4>
       <ul>
         <li><a href="#/produtos/estruturais">Blocos estruturais</a></li>
-        <li><a href="#/produtos/vedacao">Vedação e concreto</a></li>
+        <li><a href="#/produtos/vedacao">Concreto e vedação</a></li>
         <li><a href="#/produtos/canaletas">Canaletas</a></li>
         <li><a href="#/produtos/pisos">Pisos e guias</a></li>
         <li><a href="#/calculadora">Calculadora de blocos</a></li>
@@ -612,12 +631,11 @@ body.limpo .modo .sw::after{left:3px}
         <li>Rod. Abraão Assed, SP-333, km 47,5<br>Recreio Anhanguera, Ribeirão Preto/SP<br>CEP 14097-500</li>
       </ul>
     </div>
-    <div class="base"><span>© <span data-ano>2026</span> RP Block. Todos os direitos reservados.</span><span>Protótipo demonstrativo de novo site</span></div>
+    <div class="base"><span>© <span data-ano>2026</span> RP Block. Todos os direitos reservados.</span><span>Protótipo de apresentação · <button class="modo-link" type="button" id="modo" aria-pressed="false">Mostrar campos a confirmar</button></span></div>
   </div>
 </footer>
 
 <a class="wpp-fixo" data-wpp="Olá! Gostaria de um orçamento." href="#" aria-label="Falar no WhatsApp de vendas"><svg><use href="#i-wpp"/></svg></a>
-<button class="modo" type="button" id="modo" aria-pressed="true" title="Mostra ou esconde os campos que ainda dependem de confirmação da RP Block"><span class="sw"></span><span class="rot">Marcações “a confirmar”</span></button>
 
 <div class="veu" id="veu"></div>
 <aside class="gaveta" id="gaveta" aria-label="Lista de orçamento" aria-hidden="true">
@@ -643,7 +661,7 @@ const VIDEO = U + "2026/05/RP-BLOCK-FINAL-DO-FINAL-1-2-1.mp4";
 
 const CATS = [
   {id:"estruturais", nome:"Blocos estruturais", curto:"Estruturais"},
-  {id:"vedacao", nome:"Vedação e concreto", curto:"Vedação e concreto"},
+  {id:"vedacao", nome:"Blocos de concreto e vedação", curto:"Concreto e vedação"},
   {id:"complementares", nome:"Complementares e coluna", curto:"Complementares"},
   {id:"canaletas", nome:"Canaletas", curto:"Canaletas"},
   {id:"pisos", nome:"Pisos e guias", curto:"Pisos e guias"}
@@ -672,7 +690,7 @@ const P = [
   {id:"canaleta-19x19x19", cat:"canaletas", tipo:"Canaleta", d:[19,19,19], img:"2025/11/11.png", uso:"Meia canaleta da família 19."},
   {id:"piso-intertravado-10x20x8", cat:"pisos", tipo:"Piso intertravado retangular", d:[10,20,8], eixos:"largura × comprimento × espessura", img:"2025/11/31.png", uso:"Calçadas, condomínios, pátios e estacionamentos.", mpa:"35 e 50 MPa", norma:"NBR 9781", rend:50},
   {id:"piso-grama-8cm", cat:"pisos", tipo:"Piso grama (ecológico)", livre:"8 cm", eixos:"espessura", img:"2025/11/19.png", uso:"Área permeável com grama para garagens e estacionamentos.", norma:"NBR 9781"},
-  {id:"guia-6x19x39", cat:"pisos", tipo:"Guia de concreto", d:[6,19,39], img:"2025/11/24.png", uso:"Delimita canteiros, jardins e calçadas.", norma:"—"}
+  {id:"guia-6x19x39", cat:"pisos", tipo:"Guia de concreto", d:[6,19,39], img:"2025/11/24.png", uso:"Delimita canteiros, jardins e calçadas.", norma:null}
 ];
 const OBRAS = ["10-3-1","6-7","5-1","3-2","5-2","5-5","9-1","2-10","6-8","5-6","11-1-1","8-3-1"].map(f => U + "2025/11/" + f + ".png");
 const PARCEIROS = [["mrv.png","MRV"],["bild.png","Bild"],["habiarte.png","Habiarte"],["pedreschi.png","Pedreschi"],["catagua.png","Cataguá"],["vitta.png","Vitta"],["urba.png","Urba"],["WP.jpeg","WP Construtora"],["toplife.png","Toplife"],["saned.png","Saned"],["said.png","Said"],["s-figueiredo.png","S. Figueiredo"],["gfl.png","GFL"],["brio-.png","Brio"],["adn.png","ADN"],["stefani.png","Stefani"]].map(([f,n]) => ({src:U+"2026/04/"+f, nome:n}));
@@ -706,7 +724,7 @@ function cardProduto(p){
     <div class="corpo">
       <span class="tipo">${p.tipo}${p.pend ? " " + conf(p.pend, "") : ""}</span>
       <span class="med">${med(p)}${p.livre ? "" : "<small>cm</small>"}</span>
-      <span class="eixos">${p.eixos || "largura × altura × comprimento"}</span>
+      <span class="eixos">${(p.eixos || "largura × altura × comprimento").replace(/^./, c => c.toUpperCase())}</span>
       <div class="rodape-card">
         <a class="ver" href="#/produto/${p.id}">Ver ficha técnica</a>
         ${orc.has(p.id) ? `<button class="add ok" type="button" data-add="${p.id}" aria-label="${nomeP(p)} já está no orçamento">${ic("check")}Na lista</button>` : `<button class="add" type="button" data-add="${p.id}" aria-label="Adicionar ${nomeP(p)} ao orçamento">${ic("mais")}Orçar</button>`}
@@ -751,8 +769,6 @@ function grafRaio(){
     <circle cx="260" cy="260" r="83" fill="none" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 7"/>
     <line x1="260" y1="260" x2="510" y2="260" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
     <text x="440" y="250" fill="#fff" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="30" text-anchor="middle">250 km</text>
-    <text x="343" y="250" fill="rgba(255,255,255,.55)" font-family="Barlow, sans-serif" font-size="14" text-anchor="middle">166 km</text>
-    <text x="300" y="250" fill="rgba(255,255,255,.55)" font-family="Barlow, sans-serif" font-size="14" text-anchor="middle">83</text>
     <circle cx="260" cy="260" r="9" fill="#0A94EC" stroke="#fff" stroke-width="3"/>
     <text x="260" y="292" fill="#fff" font-family="Barlow, sans-serif" font-weight="600" font-size="16" text-anchor="middle">Ribeirão Preto</text>
     <text x="260" y="312" fill="rgba(255,255,255,.6)" font-family="Barlow, sans-serif" font-size="13" text-anchor="middle">Fábrica RP Block</text>
@@ -778,7 +794,7 @@ paginas.inicio = () => `
   <div class="hero-numeros anima d3"><div class="ctn">
     <div class="n"><strong data-conta="22" data-pre="+">+22</strong><span>anos de experiência</span></div>
     <div class="n"><strong data-conta="1500" data-pre="+">+1.500</strong><span>obras realizadas</span></div>
-    <div class="n"><strong data-conta="10" data-pre="+" data-pos=" mil">+10 mil</strong><span>clientes atendidos</span></div>
+    <div class="n"><strong data-conta="10" data-pre="+" data-pos=" mil">+10 mil</strong><span>clientes satisfeitos</span></div>
     <div class="n"><strong data-conta="100" data-pre="+" data-pos=" mi">+100 mi</strong><span>blocos produzidos</span></div>
   </div></div>
 </section>
@@ -794,7 +810,7 @@ paginas.inicio = () => `
     <a class="link" href="#/produtos">Ver catálogo completo ${ic("seta")}</a>
   </div>
   <div class="cats">
-    ${[["estruturais","Blocos estruturais","2025/11/9.png"],["vedacao","Vedação e concreto","2025/11/8.png"],["canaletas","Canaletas","2025/11/7.png"],["pisos","Pisos e guias","2025/11/31.png"],["complementares","Complementares e coluna","2025/11/26.png"]].map(([id,n,img]) => {
+    ${[["estruturais","Blocos estruturais","2025/11/9.png"],["vedacao","Concreto e vedação","2025/11/8.png"],["canaletas","Canaletas","2025/11/7.png"],["pisos","Pisos e guias","2025/11/31.png"],["complementares","Complementares e coluna","2025/11/26.png"]].map(([id,n,img]) => {
       const q = P.filter(p => p.cat === id).length;
       return `<a class="cat" href="#/produtos/${id}"><h3>${n}</h3><span class="qtd">${q} ${q>1?"modelos":"modelo"}</span><img src="${U+img}" alt="" loading="lazy"><span class="ir">${ic("seta")}</span></a>`;
     }).join("")}
@@ -885,16 +901,16 @@ paginas.produto = (id) => {
   if (!p) return paginas.naoEncontrada();
   const c = catDe(p.cat);
   const rel = P.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
-  const norma = p.norma || "NBR 6136";
+  const norma = p.norma === undefined ? "NBR 6136" : p.norma;
   const linhas = [
-    ["Dimensões", p.livre ? `${p.livre} de espessura` : `${med(p)} cm <span class="miudo">(${p.eixos || "L × A × C"})</span>`],
+    ["Dimensões", p.livre ? `${p.livre} de espessura` : `${med(p)} cm<br><span class="miudo">${(p.eixos || "largura × altura × comprimento").replace(/^./, c => c.toUpperCase())}</span>`],
     ["Categoria", c.nome],
-    ...(p.d && !p.eixos ? [["Família", `${p.d[0]} cm de largura`]] : []),
+    ...(p.d && p.cat !== "pisos" ? [["Família", `${p.d[0]} cm de largura`]] : []),
     ["Resistência", p.mpa || conf("Informar as resistências (MPa) fabricadas para este item. Faixa geral dos blocos: 2,5 a 24 MPa.")],
-    ["Rendimento", p.rend ? `${fmt(p.rend,1)} peças por m²` : "Conforme projeto"],
+    ...(p.rend ? [["Rendimento", `${fmt(p.rend,1)} peças por m²`]] : []),
     ["Peso aproximado", conf("Informar o peso aproximado da peça.")],
     ["Peças por palete", conf("Informar a quantidade de peças por palete.")],
-    ["Norma", norma]
+    ...(norma ? [["Norma", norma]] : [])
   ];
   return `
 <section style="padding-bottom:24px"><div class="ctn ficha">
@@ -963,7 +979,7 @@ ${cabPagina("Calculadora de blocos", "Informe as paredes da obra e veja na hora 
             <option value="bloco-vedacao-19x19x39">Bloco de vedação 19 × 19 × 39 cm</option>
             <option value="bloco-concreto-9x19x39">Bloco de concreto 9 × 19 × 39 cm</option>
           </select>
-          <span class="dica">Blocos de 39 × 19 cm de face: 12,5 peças por m², com junta de 1 cm. Para alvenaria estrutural da família 14, a quantidade sai do projeto de modulação: mande o projeto para a gente.</span>
+          <span class="dica">Blocos de 39 × 19 cm de face: 12,5 peças por m², com junta de 1 cm. Para alvenaria estrutural da família 14, a quantidade vem do projeto de modulação: envie o projeto para a nossa equipe.</span>
         </div>
       </div>
       <div class="paredes mt-m" id="paredes"></div>
@@ -1019,7 +1035,7 @@ ${cabPagina("Uma indústria feita para a construção civil", "A RP Block é esp
   <div class="capac-lista q4">
     <div><strong data-conta="22" data-pre="+">+22</strong><span>anos de experiência</span></div>
     <div><strong data-conta="1500" data-pre="+">+1.500</strong><span>obras realizadas</span></div>
-    <div><strong data-conta="10" data-pre="+" data-pos=" mil">+10 mil</strong><span>clientes atendidos</span></div>
+    <div><strong data-conta="10" data-pre="+" data-pos=" mil">+10 mil</strong><span>clientes satisfeitos</span></div>
     <div><strong data-conta="100" data-pre="+" data-pos=" mi">+100 mi</strong><span>blocos produzidos</span></div>
   </div>
 </div></section>
@@ -1032,7 +1048,7 @@ ${cabPagina("Uma indústria feita para a construção civil", "A RP Block é esp
     <div class="cert"><span class="icone">${ic("lab")}</span><strong>Laboratório</strong><span>próprio, com ensaios por lote</span></div>
     <div class="cert"><span class="icone">${ic("check")}</span><strong>Frota própria</strong><span>entrega em até 7 dias úteis</span></div>
     <div class="cert"><span class="icone">${ic("pin")}</span><strong>250 km</strong><span>de raio de atendimento em SP</span></div>
-    <div class="cert"><span class="icone">${ic("check")}</span><strong>Tecnologia italiana</strong><span>${conf("O site atual cita “Tecnologia Italiana” sem explicar. Confirmar a que se refere (ex.: marca e modelo da vibroprensa).","nos equipamentos de produção")}</span></div>
+    <div class="cert"><span class="icone">${ic("check")}</span><strong>Tecnologia italiana</strong><span>${conf("O site atual cita “Tecnologia Italiana” sem explicar. Confirmar a que se refere (ex.: marca e modelo da vibroprensa).","aplicada na produção")}</span></div>
   </div>
 </div></section>
 
@@ -1064,7 +1080,7 @@ ${ctaFinal()}`;
 paginas.qualidade = () => `
 ${cabPagina("Laboratório próprio e qualidade certificada", "Cada lote passa por controle interno, da matéria-prima ao produto final, com foco em resistência, dimensões e rastreabilidade.", "Qualidade", U + "2025/11/2-10.png")}
 <section class="secao escuro textura"><div class="ctn">
-  <div class="cab-secao"><div><h2 class="t-2">Seis etapas de controle</h2><p class="intro">O processo acompanha o bloco do recebimento da areia até a auditoria externa.</p></div></div>
+  <div class="cab-secao"><div><h2 class="t-2">Seis etapas de controle</h2><p class="intro">O controle acompanha o produto do recebimento da matéria-prima até a auditoria externa.</p></div></div>
   <ol class="etapas">
     <li><h3>Recebimento de matérias-primas</h3><p>Conferência dos materiais que chegam à fábrica.</p></li>
     <li><h3>Caracterização dos materiais</h3><p>Granulometria dos agregados (NBR 7211 e NM 248) e controle de umidade.</p></li>
@@ -1120,7 +1136,7 @@ ${cabPagina("Obras feitas com RP Block", "Condomínios, edifícios e conjuntos h
   <div class="parceiros">${PARCEIROS.map(l => `<div><img src="${l.src}" alt="${l.nome}" title="${l.nome}" loading="lazy" onerror="this.parentNode.remove()"></div>`).join("")}</div>
 </div></section>
 ${ctaFinal()}`;
-function legendaObra(i){ return `Obra ${String(i+1).padStart(2,"0")} ${conf("Incluir nome do empreendimento, construtora e cidade.", "· executada com blocos RP Block")}`; }
+function legendaObra(i){ return `<span class="so-conf">Obra ${String(i+1).padStart(2,"0")} </span>${conf("Incluir nome do empreendimento, construtora e cidade.", "Obra executada com blocos RP Block")}`; }
 
 paginas.revenda = () => `
 ${cabPagina("Seja um revendedor RP Block", "Depósitos e lojas de material de construção: revenda blocos, canaletas e pisos certificados, com entrega por frota própria.", "Revenda", U + "2025/11/5-2.png")}
@@ -1171,7 +1187,7 @@ ${cabPagina("Fale com a RP Block", "Nossa equipe está pronta para atender e ofe
       <a class="canal" href="mailto:vendas@rpblock.com.br"><span class="ic">${ic("mail")}</span><span><span>E-mail</span><strong>vendas@rpblock.com.br</strong></span></a>
       <a class="canal" href="https://maps.google.com/?q=Rod.+Abra%C3%A3o+Assed+SP-333+KM+47,5+Ribeir%C3%A3o+Preto+SP" target="_blank" rel="noopener"><span class="ic">${ic("pin")}</span><span><span>Fábrica</span><strong>Rod. Abraão Assed, SP-333, km 47,5</strong><span>Recreio Anhanguera, Ribeirão Preto/SP, CEP 14097-500</span></span></a>
     </div>
-    <p class="miudo mt-m">Horário de atendimento: ${conf("Informar os dias e horários de atendimento da fábrica.","segunda a sexta")}</p>
+    <p class="miudo mt-m so-conf">Horário de atendimento: ${conf("Informar os dias e horários de atendimento da fábrica.","segunda a sexta")}</p>
   </div>
   <div class="form-bloco" id="caixa-contato">
     <h3 class="t-3">Solicitar orçamento</h3>
@@ -1181,7 +1197,7 @@ ${cabPagina("Fale com a RP Block", "Nossa equipe está pronta para atender e ofe
         <div class="campo"><label for="k-fone">WhatsApp</label><input id="k-fone" required inputmode="tel" placeholder="(16) 90000-0000" autocomplete="tel"><span class="erro"></span></div>
         <div class="campo"><label for="k-cidade">Cidade da obra</label><input id="k-cidade" required><span class="erro"></span></div>
         <div class="campo"><label for="k-perfil">Você é</label><select id="k-perfil"><option>Construtora</option><option>Engenheiro ou arquiteto</option><option>Obra particular</option><option>Depósito ou revenda</option></select></div>
-        <div class="campo inteiro"><label for="k-msg">O que você precisa?</label><textarea id="k-msg" required placeholder="Ex.: 3.000 blocos 14x19x39 estruturais 6 MPa, entrega em Sertãozinho"></textarea><span class="erro"></span></div>
+        <div class="campo inteiro"><label for="k-msg">O que você precisa?</label><textarea id="k-msg" required placeholder="Ex.: 3.000 blocos de vedação 19x19x39, entrega em Sertãozinho"></textarea><span class="erro"></span></div>
       </div>
       <button class="btn btn-azul" type="submit">Enviar solicitação</button>
       <p class="aviso-form">Protótipo: nenhum dado é salvo ou enviado automaticamente.</p>
@@ -1217,7 +1233,6 @@ function rotear(){
   if (!primeiraCarga) main.focus({preventScroll:true});
 
   ligarWpp(main);
-  iniciarContadores();
   if (rota === "inicio") iniciarHero();
   if (rota === "produtos") iniciarCatalogo(partes[1]);
   if (rota === "produto" && porId(partes[1])) iniciarFicha(partes[1]);
@@ -1261,7 +1276,7 @@ function iniciarHero(){
     if (reduz) selo.classList.add("pausado");
   }
   const parede = $("#parede-intro");
-  if (!primeiraCarga || reduz){ parede.remove(); hero.classList.add("pronto"); return; }
+  if (!primeiraCarga || reduz || innerWidth < 761){ parede.remove(); requestAnimationFrame(() => hero.classList.add("pronto")); return; }
   // monta uma parede de blocos (amarração em meia junta) e desmonta de baixo para cima
   const bw = innerWidth < 700 ? 96 : 150, bh = bw / 2;
   const fiadas = Math.ceil(hero.offsetHeight / bh) + 1, cols = Math.ceil(innerWidth / bw) + 1;
@@ -1545,7 +1560,7 @@ function toast(t){ $("#toast-txt").textContent = t; $("#toast").classList.add("m
 function hideToast(){ $("#toast").classList.remove("mostra"); }
 
 /* modo apresentação: mostra/esconde marcações "a confirmar" */
-$("#modo").addEventListener("click", () => { const limpo = document.body.classList.toggle("limpo"); $("#modo").setAttribute("aria-pressed", !limpo); });
+$("#modo").addEventListener("click", () => { const limpo = document.body.classList.toggle("limpo"); $("#modo").setAttribute("aria-pressed", !limpo); $("#modo").textContent = limpo ? "Mostrar campos a confirmar" : "Esconder campos a confirmar"; });
 
 /* iniciar */
 $$("[data-ano]").forEach(s => s.textContent = new Date().getFullYear());
