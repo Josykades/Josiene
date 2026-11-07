@@ -458,7 +458,7 @@ main{min-height:100vh}
 
 /* CTA final */
 .cta{position:relative;overflow:hidden;border-radius:var(--r-l);background:var(--marinho);background-image:var(--tijolo);padding:clamp(40px,6vw,80px);display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center}
-.cta::after{content:"";position:absolute;right:0;top:0;bottom:0;width:45%;background:linear-gradient(90deg,var(--marinho),transparent),url("https://rpblock.com.br/wp-content/uploads/2025/11/6-8.png") center/cover;opacity:.35;pointer-events:none}
+.cta::after{content:none}
 .cta h2{color:#fff}
 .cta p{color:rgba(255,255,255,.72);margin-top:16px;max-width:46ch}
 .cta .botoes{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
@@ -733,14 +733,6 @@ const SVG_DRENANTE = (() => {
 porIdInicial("piso-intertravado-16-faces").img = SVG_16;
 porIdInicial("piso-drenante").img = SVG_DRENANTE;
 function porIdInicial(id){ return P.find(p => p.id === id); }
-// fotos profissionais (Unsplash, uso livre) para setores sem foto própria da RP Block
-const FOTO = {
-  blocos: "https://images.unsplash.com/photo-1777793919255-bf476007ea61?auto=format&fit=crop&w=1800&q=72",
-  assentando: "https://images.unsplash.com/photo-1701850009190-2859ba2aeea6?auto=format&fit=crop&w=1800&q=72",
-  parede: "https://images.unsplash.com/photo-1716839134585-04345d8c7c6b?auto=format&fit=crop&w=1800&q=72",
-  deposito: "https://images.unsplash.com/photo-1763665814482-bdf1016e4d29?auto=format&fit=crop&w=1800&q=72",
-  caminhao: "https://images.unsplash.com/photo-1770149683239-e22145da01ab?auto=format&fit=crop&w=1800&q=72"
-};
 const INSTA = "https://www.instagram.com/rpblock_/";
 const OBRAS = ["10-3-1","6-7","5-1","3-2","5-2","5-5","9-1","2-10","6-8","5-6","11-1-1","8-3-1"].map(f => U + "2025/11/" + f + ".png");
 const PARCEIROS = [["mrv.png","MRV"],["bild.png","Bild"],["habiarte.png","Habiarte"],["pedreschi.png","Pedreschi"],["catagua.png","Cataguá"],["vitta.png","Vitta"],["urba.png","Urba"],["WP.jpeg","WP Construtora"],["toplife.png","Toplife"],["saned.png","Saned"],["said.png","Said"],["s-figueiredo.png","S. Figueiredo"],["gfl.png","GFL"],["brio-.png","Brio"],["adn.png","ADN"],["stefani.png","Stefani"]].map(([f,n]) => ({src:U+"2026/04/"+f, nome:n}));
@@ -909,7 +901,7 @@ paginas.inicio = () => `
     <div><h2 class="t-2">Obras levantadas com RP Block</h2><p class="intro">Projetos realizados por todo o estado de São Paulo com blocos e pisos RP Block.</p></div>
     <a class="link" href="#/obras">Ver todas as obras ${ic("seta")}</a>
   </div>
-  <div class="vitrine">${[0,6,9,2,10].map(i => `<a href="#/obras" aria-label="Ver obras"><img src="${OBRAS[i]}" alt="Obra executada com blocos RP Block" loading="lazy"></a>`).join("")}</div>
+  <div class="vitrine">${[0,6,5,2,10].map(i => `<a href="#/obras" aria-label="Ver obras"><img src="${OBRAS[i]}" alt="Obra executada com blocos RP Block" loading="lazy"></a>`).join("")}</div>
 </div></section>
 
 <section class="secao nevoa"><div class="ctn duas">
@@ -932,7 +924,7 @@ ${blocoFaq()}
 ${ctaFinal()}`;
 
 paginas.produtos = (filtro = "todos") => `
-${cabPagina("Produtos", "Blocos estruturais, de vedação, canaletas, pisos intertravados e artefatos de concreto. Escolha os itens, monte sua lista e peça o orçamento de uma vez só.", "Produtos", FOTO.blocos, "Foto ilustrativa. Substituir por foto do pátio de estoque da RP Block.")}
+${cabPagina("Produtos", "Blocos estruturais, de vedação, canaletas, pisos intertravados e artefatos de concreto. Escolha os itens, monte sua lista e peça o orçamento de uma vez só.", "Produtos", U + "2025/11/6-8.png")}
 <section class="secao-c"><div class="ctn">
   <div class="barra-cat">
     <div class="filtros" role="group" aria-label="Filtrar por categoria" id="filtros">
@@ -1034,7 +1026,7 @@ function desenhoTecnico(p){
 }
 
 paginas.calculadora = () => `
-${cabPagina("Calculadora de blocos", "Informe as paredes da obra e veja na hora quantos blocos vai precisar. Depois é só mandar o cálculo para a nossa equipe.", "Calculadora", FOTO.assentando)}
+${cabPagina("Calculadora de blocos", "Informe as paredes da obra e veja na hora quantos blocos vai precisar. Depois é só mandar o cálculo para a nossa equipe.", "Calculadora", U + "2025/11/5-6.png")}
 <section class="secao-c nevoa"><div class="ctn calc-wrap">
   <div class="painel">
     <div class="abas" role="tablist">
@@ -1097,7 +1089,7 @@ ${cabPagina("Uma indústria feita para a construção civil", "A RP Block é esp
     <p class="intro mt-s">Nosso compromisso é entregar eficiência, durabilidade e sustentabilidade em cada projeto, com atendimento próximo e prazos cumpridos com rigor.</p>
     <a class="btn btn-azul mt-m" data-wpp="Olá! Gostaria de agendar uma visita à fábrica." href="#">${ic("wpp")}Agendar visita à fábrica</a>
   </div>
-  <figure class="video-fabrica"><video src="${VIDEO}" poster="${U}2026/04/RP.png" controls preload="none" playsinline muted aria-label="Vídeo aéreo da fábrica da RP Block"></video><figcaption>Vista aérea da fábrica da RP Block em Ribeirão Preto</figcaption></figure>
+  <figure class="video-fabrica"><video src="${VIDEO}#t=4" controls preload="metadata" playsinline muted aria-label="Vídeo aéreo da fábrica da RP Block"></video><figcaption>Vista aérea da fábrica da RP Block em Ribeirão Preto</figcaption></figure>
 </div></section>
 
 <section class="secao escuro textura"><div class="ctn">
@@ -1132,23 +1124,23 @@ ${cabPagina("Uma indústria feita para a construção civil", "A RP Block é esp
   </div>
 </div></section>
 
-<section class="secao escuro textura"><div class="ctn capac">
+<section class="secao escuro textura"><div class="ctn">
   <div>
     <h2 class="t-2">Logística própria, prazo cumprido</h2>
     <p class="intro mt-s">Frota própria para garantir agilidade, segurança e pontualidade em cada entrega. Atendemos o estado de São Paulo com os prazos que a sua obra precisa.</p>
-    <div class="capac-lista">
+    <div class="capac-lista q4">
       <div><strong>250 km</strong><span>de raio de entrega</span></div>
       <div><strong>7 dias</strong><span>úteis de prazo</span></div>
       <div><strong>800 mil</strong><span>peças prontas</span></div>
       <div><strong>40 mil</strong><span>peças por dia</span></div>
     </div>
   </div>
-  <figure class="foto-frota"><img src="${FOTO.caminhao}" alt="Caminhão com guindaste para descarga de paletes" loading="lazy"><span class="nota-foto so-conf">${conf("Foto ilustrativa. Substituir por foto da frota da RP Block.", "")}</span></figure>
+  
 </div></section>
 ${ctaFinal()}`;
 
 paginas.qualidade = () => `
-${cabPagina("Laboratório próprio e qualidade certificada", "Cada lote passa por controle interno, da matéria-prima ao produto final, com foco em resistência, dimensões e rastreabilidade.", "Qualidade", FOTO.parede, "Foto ilustrativa. Substituir por foto do laboratório da RP Block.")}
+${cabPagina("Laboratório próprio e qualidade certificada", "Cada lote passa por controle interno, da matéria-prima ao produto final, com foco em resistência, dimensões e rastreabilidade.", "Qualidade", U + "2025/11/2-10.png")}
 <section class="secao escuro textura"><div class="ctn">
   <div class="cab-secao"><div><h2 class="t-2">Seis etapas de controle</h2><p class="intro">O controle acompanha o produto do recebimento da matéria-prima até a auditoria externa.</p></div></div>
   <ol class="etapas">
@@ -1214,7 +1206,7 @@ ${ctaFinal()}`;
 function legendaObra(i){ return `<span class="so-conf">Obra ${String(i+1).padStart(2,"0")} </span>${conf("Incluir nome do empreendimento, construtora e cidade.", "Obra executada com blocos RP Block")}`; }
 
 paginas.revenda = () => `
-${cabPagina("Seja um revendedor RP Block", "Depósitos e lojas de material de construção: revenda blocos, canaletas e pisos certificados, com entrega por frota própria.", "Revenda", FOTO.deposito)}
+${cabPagina("Seja um revendedor RP Block", "Depósitos e lojas de material de construção: revenda blocos, canaletas e pisos certificados, com entrega por frota própria.", "Revenda", U + "2025/11/5-2.png")}
 <section class="secao"><div class="ctn duas" style="align-items:start">
   <div>
     <h2 class="t-2">Por que revender RP Block</h2>
