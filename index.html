@@ -345,8 +345,9 @@ main{min-height:100vh}
 .rem:disabled{opacity:.35;cursor:not-allowed}
 .add-parede{margin-top:6px;justify-self:start;background:none;border:0;color:var(--azul);font-weight:700;cursor:pointer;padding:8px 0}
 .res{position:sticky;top:calc(var(--topo) + 20px);border-radius:var(--r-l);overflow:hidden;background:var(--marinho);background-image:var(--tijolo);color:rgba(255,255,255,.75)}
-.res .viz{height:230px;display:flex;align-items:flex-end;justify-content:center;padding:22px 22px 0;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent)}
+.res .viz{min-height:150px;max-height:260px;display:flex;align-items:flex-end;justify-content:center;padding:22px 22px 0;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent)}
 .res .viz svg{max-width:100%;max-height:100%}
+.res .viz svg{max-height:200px;width:auto;height:auto;max-width:100%}
 .res .viz rect{animation:assenta .35s cubic-bezier(.2,.7,.2,1) both}
 @keyframes assenta{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .res .dados{padding:24px 26px 28px}
@@ -355,6 +356,31 @@ main{min-height:100vh}
 .res dl{display:grid;grid-template-columns:1fr auto;gap:8px 16px;margin:20px 0 24px;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);font-size:15px}
 .res dd{color:#fff;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
 .res .btns{display:grid;gap:10px}
+.res .btns .btn:disabled{opacity:.45;cursor:not-allowed}
+.calc-col{display:grid}
+.cab-bloco{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.sw-campo{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--marinho);cursor:pointer}
+.sw-campo input,.chk input{width:20px;height:20px;accent-color:var(--azul);cursor:pointer}
+.chk{display:flex!important;align-items:center;gap:10px;min-height:50px;font-weight:500!important;cursor:pointer}
+.vaos{display:grid;gap:12px}
+.vao-linha{display:grid;grid-template-columns:80px repeat(3,1fr);gap:10px;align-items:end}
+.vao-linha>strong{padding-bottom:14px;color:var(--marinho)}
+.vao-linha .campo label{font-size:13px}
+@media (max-width:560px){.parede-linha .campo:nth-child(3){display:none}.parede-linha .campo label{white-space:normal}}
+.barra-calc{display:none}
+@media (max-width:960px){.barra-calc{position:fixed;left:14px;right:90px;bottom:22px;z-index:65;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:0 18px;border:0;border-radius:var(--r-m);background:var(--marinho);color:#fff;font:inherit;font-size:15px;font-weight:600;box-shadow:0 14px 30px -12px rgba(0,0,0,.55);cursor:pointer}.barra-calc b{color:var(--azul);font-weight:700}.barra-calc.some{display:none}}
+@media (max-width:560px){.vao-linha{grid-template-columns:1fr 1fr 1fr}.vao-linha>strong{grid-column:1/-1;padding:0}}
+.lista-mat{width:100%;border-collapse:collapse;margin:14px 0 4px;font-size:15px}
+.lista-mat th{text-align:left;font-size:13px;font-weight:600;color:rgba(255,255,255,.55);padding:0 0 8px;border-bottom:1px solid rgba(255,255,255,.14)}
+.lista-mat th:last-child,.lista-mat td:last-child{text-align:right;white-space:nowrap}
+.lista-mat td{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);color:#fff;font-weight:600;vertical-align:top}
+.lista-mat td small{display:block;font-size:12.5px;font-weight:400;color:rgba(255,255,255,.55);margin-top:2px}
+.lista-mat td:last-child{font-family:var(--display);font-size:24px;font-weight:800;padding-left:12px}
+.lista-mat td span{font-family:var(--texto);font-size:13px;font-weight:500;color:rgba(255,255,255,.6)}
+.lista-mat .vazio-calc{color:rgba(255,255,255,.6);font-weight:400;text-align:left!important;font-family:var(--texto)!important;font-size:15px!important}
+.legenda-viz{display:flex;gap:14px;justify-content:center;font-size:12px;color:rgba(255,255,255,.6);padding:8px 0 4px;width:100%}
+.legenda-viz i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.res .viz{flex-direction:column;align-items:center}
 .res .nota{font-size:13px;color:rgba(255,255,255,.55);margin-top:16px}
 @media (max-width:960px){.calc-wrap{grid-template-columns:1fr}.res{position:relative;top:0}}
 @media (max-width:560px){.campos{grid-template-columns:1fr}.parede-linha{grid-template-columns:1fr 1fr 44px}.parede-linha .campo:nth-child(3){grid-column:1/3}.parede-linha .rem{grid-row:1;grid-column:3}}
@@ -632,7 +658,7 @@ body.limpo .modo .sw::after{left:3px}
         <li><a href="#/produtos/vedacao">Concreto e vedação</a></li>
         <li><a href="#/produtos/canaletas">Canaletas</a></li>
         <li><a href="#/produtos/pisos">Pisos e guias</a></li>
-        <li><a href="#/calculadora">Calculadora de blocos</a></li>
+        <li><a href="#/calculadora">Calculadora de materiais</a></li>
       </ul>
     </div>
     <div>
@@ -692,6 +718,7 @@ const CATS = [
 ];
 // medidas no padrão do site atual: largura × altura × comprimento (cm)
 const P = [
+  {id:"bloco-estrutural-14x19x39", cat:"estruturais", tipo:"Bloco estrutural", d:[14,19,39], img:"2025/11/bloco.png", uso:"Bloco principal da alvenaria estrutural na família 14: paredes que sustentam a laje.", rend:12.5, pend:"Confirmar a foto deste bloco (usada a imagem Durablock do site atual)."},
   {id:"bloco-estrutural-14x19x34", cat:"estruturais", tipo:"Bloco estrutural", d:[14,19,34], img:"2025/11/4-1.png", uso:"Peça da família 14 para modulação e amarração em alvenaria estrutural."},
   {id:"bloco-estrutural-14x19x44", cat:"estruturais", tipo:"Bloco estrutural", d:[14,19,44], img:"2025/11/6.png", uso:"Bloco de amarração da família 14, usado em encontros de paredes."},
   {id:"bloco-estrutural-14x19x54", cat:"estruturais", tipo:"Bloco estrutural", d:[14,19,54], img:"2025/11/9.png", uso:"Bloco de amarração da família 14, usado em encontros de paredes."},
@@ -794,7 +821,7 @@ function ctaFinal(){
     <p>Mande a lista de materiais ou o projeto. Nossa equipe responde com o melhor preço e o prazo de entrega.</p></div>
     <div class="botoes">
       <a class="btn btn-wpp" data-wpp="Olá! Gostaria de um orçamento." href="#">${ic("wpp")}Pedir orçamento no WhatsApp</a>
-      <a class="btn btn-contorno" href="#/calculadora">Calcular quantidade de blocos</a>
+      <a class="btn btn-contorno" href="#/calculadora">Calcular materiais da obra</a>
     </div>
   </div></div></section>`;
 }
@@ -1026,58 +1053,77 @@ function desenhoTecnico(p){
 }
 
 paginas.calculadora = () => `
-${cabPagina("Calculadora de blocos", "Informe as paredes da obra e veja na hora quantos blocos vai precisar. Depois é só mandar o cálculo para a nossa equipe.", "Calculadora", U + "2025/11/5-6.png")}
+${cabPagina("Calculadora de materiais", "Informe as paredes, as portas e janelas e o piso da obra. A calculadora soma blocos, meio-blocos, canaletas e piso numa lista só, pronta para o orçamento.", "Calculadora", U + "2025/11/5-6.png")}
 <section class="secao-c nevoa"><div class="ctn calc-wrap">
-  <div class="painel">
-    <div class="abas" role="tablist">
-      <button type="button" role="tab" aria-selected="true" data-modo="parede">Paredes de blocos</button>
-      <button type="button" role="tab" aria-selected="false" data-modo="piso">Piso intertravado</button>
-    </div>
-    <div id="modo-parede">
-      <div class="campos">
-        <div class="campo inteiro"><label for="c-bloco">Bloco</label>
-          <select id="c-bloco">
-            <option value="bloco-vedacao-19x19x39">Bloco de vedação 19 × 19 × 39 cm</option>
-            <option value="bloco-concreto-9x19x39">Bloco de concreto 9 × 19 × 39 cm</option>
-          </select>
-          <span class="dica">Blocos de 39 × 19 cm de face: 12,5 peças por m², com junta de 1 cm. Para alvenaria estrutural da família 14, a quantidade vem do projeto de modulação: envie o projeto para a nossa equipe.</span>
+  <div class="calc-col">
+    <div class="painel">
+      <div class="cab-bloco"><h2 class="t-3">1. Paredes</h2><label class="sw-campo"><input type="checkbox" id="usa-parede" checked><span>Incluir</span></label></div>
+      <div id="sec-parede">
+        <div class="campos">
+          <div class="campo inteiro"><label for="c-fam">Bloco das paredes</label>
+            <select id="c-fam">
+              <option value="14">Bloco estrutural 14 × 19 × 39 cm (família 14)</option>
+              <option value="19">Bloco de vedação 19 × 19 × 39 cm (família 19)</option>
+              <option value="9">Bloco de concreto 9 × 19 × 39 cm (família 9)</option>
+            </select>
+          </div>
+        </div>
+        <div class="paredes mt-m" id="paredes"></div>
+        <button class="add-parede" type="button" id="add-parede">+ Adicionar parede</button>
+        <div class="campos mt-s">
+          <div class="campo"><label for="c-perda">Margem de perda</label><select id="c-perda"><option value="0">Sem margem</option><option value="5" selected>5%</option><option value="10">10%</option></select></div>
+          <div class="campo"><label class="chk"><input type="checkbox" id="c-cinta" checked><span>Cinta de amarração no topo das paredes (canaletas)</span></label></div>
         </div>
       </div>
-      <div class="paredes mt-m" id="paredes"></div>
-      <button class="add-parede" type="button" id="add-parede">+ Adicionar outra parede</button>
-      <div class="campos mt-s">
-        <div class="campo"><label for="c-vaos">Portas e janelas (m²)</label><input id="c-vaos" type="number" inputmode="decimal" min="0" step="0.1" value="0"><span class="dica">Soma das áreas a descontar</span></div>
-        <div class="campo"><label for="c-perda">Margem de perda</label><select id="c-perda"><option value="0">Sem margem</option><option value="5" selected>5%</option><option value="10">10%</option></select></div>
+    </div>
+
+    <div class="painel mt-s" id="painel-vaos">
+      <div class="cab-bloco"><h2 class="t-3">2. Portas e janelas</h2></div>
+      <p class="miudo">A área dos vãos é descontada das paredes. Acima de portas e janelas entram canaletas de verga e, abaixo das janelas, de contraverga, com 30 cm de apoio de cada lado.</p>
+      <div class="vaos mt-s">
+        <div class="vao-linha"><strong>Portas</strong>
+          <div class="campo"><label for="vp-q">Quantidade</label><input id="vp-q" type="number" min="0" step="1" value="2" inputmode="numeric"></div>
+          <div class="campo"><label for="vp-l">Largura (m)</label><input id="vp-l" type="number" min="0" step="0.05" value="0.8" inputmode="decimal"></div>
+          <div class="campo"><label for="vp-a">Altura (m)</label><input id="vp-a" type="number" min="0" step="0.05" value="2.1" inputmode="decimal"></div>
+        </div>
+        <div class="vao-linha"><strong>Janelas</strong>
+          <div class="campo"><label for="vj-q">Quantidade</label><input id="vj-q" type="number" min="0" step="1" value="2" inputmode="numeric"></div>
+          <div class="campo"><label for="vj-l">Largura (m)</label><input id="vj-l" type="number" min="0" step="0.05" value="1.2" inputmode="decimal"></div>
+          <div class="campo"><label for="vj-a">Altura (m)</label><input id="vj-a" type="number" min="0" step="0.05" value="1" inputmode="decimal"></div>
+        </div>
       </div>
     </div>
-    <div id="modo-piso" hidden>
-      <div class="campos">
-        <div class="campo inteiro"><label for="p-tipo">Piso</label><select id="p-tipo"><option value="piso-intertravado-retangular">Piso intertravado retangular 10 × 20 cm</option><option value="piso-intertravado-16-faces">Piso intertravado 16 faces</option><option value="piso-drenante">Piso intertravado drenante</option></select><span class="dica" id="p-dica"></span></div>
-        <div class="campo"><label for="p-comp">Comprimento da área (m)</label><input id="p-comp" type="number" inputmode="decimal" min="0" step="0.1" value="10"></div>
-        <div class="campo"><label for="p-larg">Largura da área (m)</label><input id="p-larg" type="number" inputmode="decimal" min="0" step="0.1" value="5"></div>
-        <div class="campo"><label for="p-perda">Margem de perda</label><select id="p-perda"><option value="0">Sem margem</option><option value="5" selected>5%</option><option value="10">10%</option></select></div>
-        <div class="campo"><label for="p-esp">Espessura</label><select id="p-esp"></select></div>
-        <div class="campo" id="campo-mpa"><label for="p-mpa">Resistência</label><select id="p-mpa"><option>35 MPa</option><option>50 MPa</option></select></div>
+
+    <div class="painel mt-s">
+      <div class="cab-bloco"><h2 class="t-3">3. Piso intertravado</h2><label class="sw-campo"><input type="checkbox" id="usa-piso"><span>Incluir</span></label></div>
+      <div id="sec-piso" hidden>
+        <div class="campos">
+          <div class="campo inteiro"><label for="p-tipo">Piso</label><select id="p-tipo"><option value="piso-intertravado-retangular">Piso intertravado retangular 10 × 20 cm</option><option value="piso-intertravado-16-faces">Piso intertravado 16 faces</option><option value="piso-drenante">Piso intertravado drenante</option></select><span class="dica" id="p-dica"></span></div>
+          <div class="campo"><label for="p-comp">Comprimento da área (m)</label><input id="p-comp" type="number" inputmode="decimal" min="0" step="0.1" value="10"></div>
+          <div class="campo"><label for="p-larg">Largura da área (m)</label><input id="p-larg" type="number" inputmode="decimal" min="0" step="0.1" value="5"></div>
+          <div class="campo"><label for="p-esp">Espessura</label><select id="p-esp"></select></div>
+          <div class="campo" id="campo-mpa"><label for="p-mpa">Resistência</label><select id="p-mpa"><option>35 MPa</option><option>50 MPa</option></select></div>
+          <div class="campo"><label for="p-perda">Margem de perda</label><select id="p-perda"><option value="0">Sem margem</option><option value="5" selected>5%</option><option value="10">10%</option></select></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="res" aria-live="polite">
+
+  <div class="res" aria-live="polite" id="res-calc">
     <div class="viz" id="viz"></div>
     <div class="dados">
-      <div class="total"><span id="r-total">0</span><small id="r-un">blocos</small></div>
-      <dl>
-        <dt>Área total</dt><dd id="r-area">0 m²</dd>
-        <dt id="r-rend-l">Rendimento</dt><dd id="r-rend">12,5 peças/m²</dd>
-        <dt>Margem de perda</dt><dd id="r-perda">5%</dd>
-      </dl>
+      <h2 class="t-3" style="color:#fff">Lista de materiais</h2>
+      <table class="lista-mat"><thead><tr><th>Material</th><th>Qtd.</th></tr></thead><tbody id="lista-mat"></tbody></table>
+      <dl id="resumo-calc"></dl>
       <div class="btns">
-        <button class="btn btn-azul" type="button" id="calc-add">${ic("mais")}Adicionar ao orçamento</button>
-        <a class="btn btn-wpp" id="calc-wpp" href="#" target="_blank" rel="noopener">${ic("wpp")}Enviar cálculo pelo WhatsApp</a>
+        <button class="btn btn-azul" type="button" id="calc-add">${ic("mais")}Adicionar tudo ao orçamento</button>
+        <a class="btn btn-wpp" id="calc-wpp" href="#" target="_blank" rel="noopener">${ic("wpp")}Enviar lista pelo WhatsApp</a>
       </div>
-      <p class="nota">Estimativa de quantidade. O orçamento final é confirmado pela equipe de vendas de acordo com o projeto.</p>
+      <p class="nota">Estimativa de materiais com juntas de 1 cm (12,5 blocos por m²). A quantidade final é confirmada pela equipe de vendas de acordo com o projeto.</p>
     </div>
   </div>
 </div></section>
+<button class="barra-calc" type="button" id="barra-calc"><span id="barra-txt">Lista de materiais</span><b>Ver lista</b></button>
 ${blocoFaq()}`;
 
 paginas.empresa = () => `
@@ -1280,7 +1326,7 @@ paginas.naoEncontrada = () => `${cabPagina("Página não encontrada", "O endere�
 
 /* ================= roteador ================= */
 const main = $("#conteudo"), topo = $("#topo");
-const TITULOS = {inicio:"RP Block | Blocos de concreto e pisos intertravados", produtos:"Produtos | RP Block", produto:"Ficha técnica | RP Block", calculadora:"Calculadora de blocos | RP Block", empresa:"Empresa | RP Block", qualidade:"Qualidade e laboratório | RP Block", obras:"Obras | RP Block", revenda:"Seja um revendedor | RP Block", contato:"Contato | RP Block"};
+const TITULOS = {inicio:"RP Block | Blocos de concreto e pisos intertravados", produtos:"Produtos | RP Block", produto:"Ficha técnica | RP Block", calculadora:"Calculadora de materiais | RP Block", empresa:"Empresa | RP Block", qualidade:"Qualidade e laboratório | RP Block", obras:"Obras | RP Block", revenda:"Seja um revendedor | RP Block", contato:"Contato | RP Block"};
 let primeiraCarga = true;
 
 function rotear(){
@@ -1420,8 +1466,15 @@ function iniciarFicha(id){
 
 /* ================= calculadora ================= */
 function iniciarCalculadora(){
-  let modo = "parede", paredes = [{c:6, a:2.8}, {c:4, a:2.8}];
-  const lista = $("#paredes");
+  const FAM = {
+    "14": {inteiro:"bloco-estrutural-14x19x39", meio:"bloco-concreto-14x19x19", canaleta:"canaleta-u-14x19x39"},
+    "19": {inteiro:"bloco-vedacao-19x19x39", meio:"bloco-concreto-19x19x19", canaleta:"canaleta-v-19x19x39"},
+    "9":  {inteiro:"bloco-concreto-9x19x39", meio:"bloco-concreto-9x19x19", canaleta:null}
+  };
+  let paredes = [{c:6, a:2.8}, {c:4, a:2.8}, {c:6, a:2.8}, {c:4, a:2.8}];
+  const lista = $("#paredes"), num = id => Math.max(parseFloat(String($("#" + id).value).replace(",", ".")) || 0, 0);
+  let itensCalc = [], ultimo = null;
+
   function desenharLinhas(){
     lista.innerHTML = paredes.map((p, i) => `<div class="parede-linha">
       <div class="campo"><label for="pc${i}">Parede ${i+1} · comprimento (m)</label><input id="pc${i}" data-i="${i}" data-k="c" type="number" inputmode="decimal" min="0" step="0.1" value="${p.c}"></div>
@@ -1432,88 +1485,125 @@ function iniciarCalculadora(){
   }
   lista.addEventListener("input", e => {
     const el = e.target; if (!el.dataset.k) return;
-    paredes[+el.dataset.i][el.dataset.k] = parseFloat(String(el.value).replace(",", ".")) || 0;
+    paredes[+el.dataset.i][el.dataset.k] = Math.max(parseFloat(String(el.value).replace(",", ".")) || 0, 0);
     const p = paredes[+el.dataset.i];
     $(`[data-area="${el.dataset.i}"]`).value = `${fmt(p.c * p.a, 2)} m²`;
     calcular();
   });
   lista.addEventListener("click", e => { const b = e.target.closest("[data-rem]"); if (!b) return; paredes.splice(+b.dataset.rem, 1); desenharLinhas(); calcular(); });
   $("#add-parede").addEventListener("click", () => { paredes.push({c:3, a:2.8}); desenharLinhas(); calcular(); $(`#pc${paredes.length-1}`).focus(); });
-  $$("[data-modo]").forEach(b => b.addEventListener("click", () => {
-    modo = b.dataset.modo;
-    $$("[data-modo]").forEach(x => x.setAttribute("aria-selected", x === b));
-    $("#modo-parede").hidden = modo !== "parede"; $("#modo-piso").hidden = modo !== "piso";
-    calcular();
-  }));
+
   function opcoesPiso(){
     const p = porId($("#p-tipo").value), atual = +$("#p-esp").value;
     $("#p-esp").innerHTML = p.esp.map(e => `<option value="${e}"${e === (p.esp.includes(atual) ? atual : p.esp[p.esp.length - 1]) ? " selected" : ""}>${e} cm</option>`).join("");
     $("#campo-mpa").hidden = !p.mpa;
-    $("#p-dica").textContent = p.rend ? "Peça de 10 × 20 cm: 50 peças por m²." : p.id === "piso-drenante" ? "Piso drenante conforme a NBR 16416. O cálculo sai em m²; a quantidade de peças é confirmada no orçamento." : "O cálculo sai em m²; a quantidade de peças é confirmada no orçamento.";
+    $("#p-dica").textContent = p.rend ? "Peça de 10 × 20 cm: 50 peças por m²." : "Calculado em m². A quantidade de peças é confirmada no orçamento.";
   }
   $("#p-tipo").addEventListener("input", () => { opcoesPiso(); calcular(); });
-  opcoesPiso();
-  ["c-vaos","c-perda","c-bloco","p-comp","p-larg","p-perda","p-mpa","p-esp"].forEach(id => $("#" + id).addEventListener("input", calcular));
+  $("#usa-parede").addEventListener("change", () => { $("#sec-parede").hidden = !$("#usa-parede").checked; $("#painel-vaos").hidden = !$("#usa-parede").checked; calcular(); });
+  $("#usa-piso").addEventListener("change", () => { $("#sec-piso").hidden = !$("#usa-piso").checked; calcular(); });
+  ["c-fam","c-perda","c-cinta","vp-q","vp-l","vp-a","vj-q","vj-l","vj-a","p-comp","p-larg","p-esp","p-mpa","p-perda"].forEach(id => $("#" + id).addEventListener("input", calcular));
 
-  let ultimo = null;
   function calcular(){
-    let area, rend, perda, total, prodId, msg, un;
-    if (modo === "parede"){
+    itensCalc = [];
+    const resumo = [];
+    const usaParede = $("#usa-parede").checked, usaPiso = $("#usa-piso").checked;
+    let msgParede = "", msgPiso = "";
+
+    if (usaParede){
+      const fam = FAM[$("#c-fam").value], perda = 1 + +$("#c-perda").value / 100, cinta = $("#c-cinta").checked;
       const bruta = paredes.reduce((s, p) => s + p.c * p.a, 0);
-      area = Math.max(bruta - (parseFloat($("#c-vaos").value) || 0), 0);
-      rend = 12.5; perda = +$("#c-perda").value; prodId = $("#c-bloco").value; un = "blocos";
-      total = Math.ceil(area * rend * (1 + perda / 100));
-      const p = porId(prodId);
-      msg = `Olá! Fiz o cálculo no site e gostaria de um orçamento:\n• ${nomeP(p)}\n• ${paredes.length} parede(s): ${paredes.map(x => `${fmt(x.c,2)} × ${fmt(x.a,2)} m`).join("; ")}\n• Área líquida: ${fmt(area,2)} m²\n• Quantidade estimada: ${fmt(total)} blocos (margem de ${perda}%)`;
+      const np = Math.round(num("vp-q")), lp = num("vp-l"), ap = num("vp-a");
+      const nj = Math.round(num("vj-q")), lj = num("vj-l"), aj = num("vj-a");
+      const vaos = Math.min(np * lp * ap + nj * lj * aj, bruta);
+      const liquida = Math.max(bruta - vaos, 0);
+      // canaletas: cinta no topo de cada parede + vergas (portas e janelas) + contravergas (janelas)
+      const canCinta = cinta ? paredes.reduce((s, p) => s + (p.c > 0 && p.a > 0 ? Math.ceil(p.c / 0.4) : 0), 0) : 0;
+      const porVerga = l => l > 0 ? Math.ceil((l + 0.6) / 0.4) : 0;
+      const canVerga = np * porVerga(lp) + nj * porVerga(lj);
+      const canContra = nj * porVerga(lj);
+      const canTotal = canCinta + canVerga + canContra;
+      // área ocupada pelas canaletas sai da área de blocos (cada peça ocupa 0,40 × 0,20 m)
+      const areaBlocos = Math.max(liquida - canTotal * 0.08, 0);
+      // meio-blocos: um a cada duas fiadas em cada ponta de parede (amarração em meia junta)
+      const meio = paredes.reduce((s, p) => s + (p.c > 0 ? Math.round(p.a / 0.2) : 0), 0);
+      const inteiros = Math.max(areaBlocos * 12.5 - meio * 0.5, 0);
+      const qInt = Math.ceil(inteiros * perda), qMeio = Math.ceil(meio * perda), qCan = Math.ceil(canTotal * perda);
+      if (qInt) itensCalc.push({key: fam.inteiro, qtd: qInt, un: "peças", detalhe: "paredes"});
+      if (qMeio) itensCalc.push({key: fam.meio, qtd: qMeio, un: "peças", detalhe: "meio-bloco, nas pontas das paredes"});
+      if (qCan) fam.canaleta
+        ? itensCalc.push({key: fam.canaleta, qtd: qCan, un: "peças", detalhe: [canCinta && "cinta", canVerga && "vergas", canContra && "contravergas"].filter(Boolean).join(", ")})
+        : itensCalc.push({key: null, nome: "Canaleta para família 9 (consultar modelo)", qtd: qCan, un: "peças", detalhe: "cinta e vergas"});
+      resumo.push(["Paredes", `${paredes.length} · ${fmt(bruta, 2)} m²`], ["Vãos descontados", `${fmt(vaos, 2)} m²`], ["Área de alvenaria", `${fmt(liquida, 2)} m²`]);
+      msgParede = `\nParedes: ${paredes.map(x => `${fmt(x.c,2)} × ${fmt(x.a,2)} m`).join("; ")} (${fmt(liquida,2)} m² líquidos)\nVãos: ${np} porta(s) ${fmt(lp,2)} × ${fmt(ap,2)} m e ${nj} janela(s) ${fmt(lj,2)} × ${fmt(aj,2)} m${cinta ? "\nCom cinta de amarração no topo" : ""}`;
       const maior = paredes.reduce((m, x) => x.c * x.a > m.c * m.a ? x : m, paredes[0]);
-      const chave = `${maior.c}x${maior.a}`;
-      if (chave !== ultimo){ desenharParede(maior.c, maior.a); ultimo = chave; }
-    } else {
-      area = (parseFloat($("#p-comp").value) || 0) * (parseFloat($("#p-larg").value) || 0);
-      const pp = porId($("#p-tipo").value), esp = +$("#p-esp").value;
-      perda = +$("#p-perda").value; prodId = `${pp.id}|${esp}`; un = "m²";
-      total = Math.ceil(area * (1 + perda / 100));
-      rend = pp.rend || 0;
-      const pecas = rend ? Math.ceil(area * rend * (1 + perda / 100)) : 0;
-      msg = `Olá! Fiz o cálculo no site e gostaria de um orçamento:\n• ${nomeP(pp, esp)}${pp.mpa ? ", " + $("#p-mpa").value : ""}\n• Área: ${fmt(area,2)} m²\n• Quantidade com margem de ${perda}%: ${fmt(total)} m²${pecas ? ` (cerca de ${fmt(pecas)} peças)` : ""}`;
-      $("#r-rend-l").textContent = "Peças (estimativa)";
-      $("#r-rend").textContent = pecas ? `≈ ${fmt(pecas)}` : "no orçamento";
-      const chave = "piso" + area;
-      if (chave !== ultimo){ desenharPiso(); ultimo = chave; }
+      const chave = `${maior.c}x${maior.a}x${cinta}`;
+      if (chave !== ultimo){ desenharParede(maior.c, maior.a, cinta); ultimo = chave; }
     }
-    $("#r-total").textContent = fmt(total);
-    $("#r-un").textContent = un;
-    $("#r-area").textContent = `${fmt(area, 2)} m²`;
-    if (modo === "parede"){ $("#r-rend-l").textContent = "Rendimento"; $("#r-rend").textContent = `${fmt(rend, 1)} peças/m²`; }
-    $("#r-perda").textContent = `${perda}%`;
-    $("#calc-wpp").href = linkWpp(msg);
-    $("#calc-add").onclick = () => total > 0 && adicionar(prodId, total);
+
+    if (usaPiso){
+      const pp = porId($("#p-tipo").value), esp = +$("#p-esp").value, perdaP = 1 + +$("#p-perda").value / 100;
+      const area = num("p-comp") * num("p-larg");
+      const m2 = Math.ceil(area * perdaP);
+      if (m2) itensCalc.push({key: `${pp.id}|${esp}`, qtd: m2, un: "m²", detalhe: pp.mpa ? $("#p-mpa").value : ""});
+      resumo.push(["Área de piso", `${fmt(area, 2)} m²`]);
+      if (pp.rend && area) resumo.push(["Peças de piso (estimativa)", `≈ ${fmt(Math.ceil(area * pp.rend * perdaP))}`]);
+      msgPiso = `\nPiso: ${fmt(area,2)} m²`;
+      if (!usaParede && ultimo !== "piso"){ desenharPiso(); ultimo = "piso"; }
+    }
+    if (!usaParede && !usaPiso){ $("#viz").innerHTML = ""; ultimo = null; }
+
+    const nomeItem = it => it.key ? (() => { const x = itemDe(it.key); return nomeP(x.p, x.esp); })() : it.nome;
+    $("#lista-mat").innerHTML = itensCalc.length
+      ? itensCalc.map(it => `<tr><td>${nomeItem(it)}${it.detalhe ? `<small>${it.detalhe}</small>` : ""}</td><td>${fmt(it.qtd)} <span>${it.un}</span></td></tr>`).join("")
+      : `<tr><td colspan="2" class="vazio-calc">Preencha as medidas para ver os materiais.</td></tr>`;
+    $("#resumo-calc").innerHTML = resumo.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("");
+    const linhas = itensCalc.map(it => `• ${fmt(it.qtd)} ${it.un} – ${nomeItem(it)}${it.detalhe ? ` (${it.detalhe})` : ""}`).join("\n");
+    $("#calc-wpp").href = linkWpp(`Olá! Fiz o cálculo de materiais no site e gostaria de um orçamento:\n${linhas}${msgParede}${msgPiso}`);
+    $("#calc-add").disabled = !itensCalc.some(it => it.key);
+    $("#barra-txt").textContent = itensCalc.length ? `${itensCalc.length} ${itensCalc.length === 1 ? "material" : "materiais"} calculados` : "Preencha as medidas";
   }
-  function desenharParede(comp, alt){
+  $("#barra-calc").addEventListener("click", () => $("#res-calc").scrollIntoView({behavior:"smooth", block:"start"}));
+  if ("IntersectionObserver" in window){
+    const io = new IntersectionObserver(([e]) => $("#barra-calc")?.classList.toggle("some", e.isIntersecting), {threshold:.15});
+    io.observe($("#res-calc"));
+  }
+  $("#calc-add").addEventListener("click", () => {
+    const validos = itensCalc.filter(it => it.key);
+    if (!validos.length) return;
+    validos.forEach(it => adicionar(it.key, it.qtd, true));
+    toast(`${validos.length} ${validos.length === 1 ? "material adicionado" : "materiais adicionados"} ao orçamento`);
+  });
+
+  function desenharParede(comp, alt, cinta){
     const C = Math.min(Math.max(comp, .4), 24), A = Math.min(Math.max(alt, .2), 6);
     const bw = 40, bh = 20, fi = Math.max(1, Math.round(A / .2)), larg = Math.round(C / .4 * bw);
     let r = "", s = 11; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
     for (let f = 0; f < fi; f++){
-      const y = (fi - 1 - f) * bh; let x = f % 2 ? -bw / 2 : 0;
+      const y = (fi - 1 - f) * bh, topo = cinta && f === fi - 1; let x = f % 2 && !topo ? -bw / 2 : 0;
       while (x < larg){
         const x0 = Math.max(x, 0), x1 = Math.min(x + bw, larg), t = 168 + Math.floor(rnd() * 26);
-        r += `<rect x="${x0+1}" y="${y+1}" width="${x1-x0-2}" height="${bh-2}" rx="1.2" fill="rgb(${t},${t+4},${t+8})" style="animation-delay:${Math.min(f*28 + (x0/larg)*120, 900)}ms"/>`;
+        const meio = x1 - x0 < bw - 1;
+        const cor = topo ? "rgb(10,148,236)" : meio ? "rgb(120,170,210)" : `rgb(${t},${t+4},${t+8})`;
+        r += `<rect x="${x0+1}" y="${y+1}" width="${x1-x0-2}" height="${bh-2}" rx="1.2" fill="${cor}" style="animation-delay:${Math.min(f*28 + (x0/larg)*120, 900)}ms"/>`;
         x += bw;
       }
     }
-    $("#viz").innerHTML = `<svg viewBox="0 0 ${larg} ${fi*bh}" width="${larg}" height="${fi*bh}" role="img" aria-label="Desenho da maior parede">${r}</svg>`;
+    $("#viz").innerHTML = `<svg viewBox="0 0 ${larg} ${fi*bh}" width="${larg}" height="${fi*bh}" role="img" aria-label="Desenho da maior parede: blocos inteiros, meio-blocos nas pontas e canaletas no topo">${r}</svg>
+      <div class="legenda-viz"><span><i style="background:#B4B8BC"></i>Blocos</span><span><i style="background:rgb(120,170,210)"></i>Meio-blocos</span>${cinta ? `<span><i style="background:#0A94EC"></i>Canaletas</span>` : ""}</div>`;
   }
   function desenharPiso(){
-    // padrão espinha de peixe do piso 10x20
-    let r = ""; const w = 20, h = 10; let s = 5; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    let r = ""; let s = 5; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
     for (let y = -20; y < 200; y += 20) for (let x = -40; x < 360; x += 40){
-      const t = 150 + Math.floor(rnd() * 30), t2 = 150 + Math.floor(rnd() * 30);
-      r += `<rect x="${x+1}" y="${y+1}" width="${2*w-2}" height="${h*2-2}" rx="1" fill="rgb(${t},${t+3},${t+6})" style="animation-delay:${(y+x)/2}ms"/>`;
+      const t = 150 + Math.floor(rnd() * 30);
+      r += `<rect x="${x+1}" y="${y+1}" width="38" height="18" rx="1" fill="rgb(${t},${t+3},${t+6})" style="animation-delay:${(y+x)/2}ms"/>`;
     }
     $("#viz").innerHTML = `<svg viewBox="0 0 320 190" width="320" height="190" role="img" aria-label="Ilustração de piso intertravado">${r}</svg>`;
   }
-  desenharLinhas(); calcular();
-  if (location.hash.endsWith("/piso")) $('[data-modo="piso"]').click();
+
+  opcoesPiso(); desenharLinhas();
+  if (location.hash.endsWith("/piso")){ $("#usa-piso").checked = true; $("#sec-piso").hidden = false; }
+  calcular();
 }
 
 /* ================= galeria + lightbox ================= */
@@ -1591,11 +1681,11 @@ function iniciarContato(){
 /* ================= lista de orçamento (somente em memória) ================= */
 const orc = new Map();
 const gaveta = $("#gaveta"), veu = $("#veu");
-function adicionar(id, qtd){
+function adicionar(id, qtd, silencioso){
   orc.set(id, (orc.get(id) || 0) + qtd);
   atualizarOrc();
   const c = $("#contador"); c.classList.remove("pulo"); void c.offsetWidth; c.classList.add("pulo");
-  const it = itemDe(id); toast(`${nomeP(it.p, it.esp)} adicionado ao orçamento`);
+  const it = itemDe(id); if (!silencioso) toast(`${nomeP(it.p, it.esp)} adicionado ao orçamento`);
   $$(`[data-add="${id}"]`).forEach(b => { b.classList.add("ok"); b.innerHTML = ic("check") + "Na lista"; });
 }
 function atualizarOrc(){
